@@ -1,21 +1,27 @@
 package protocol;
 import java.io.*;
 import java.net.*;
-  
- public class Client {
 
-    private String hostName;
-    private int portNumber;
+/**
+ * This class uses sockets to connect to the server process and then
+ * send and recieves response, allowing the two processes to 
+ * communicate according to some pre-defined protocol. 
+ * The main() method is configured to work with the Server class
+ * using the DavidPaulProtocol.
+ */
+ public class Client {
 
     private Socket socket;
     private PrintWriter out;
     private BufferedReader in;
 
-    public Client(String hostName, int portNumber) {
-        this.hostName = hostName;
-        this.portNumber = portNumber;
-
-        
+    /**
+     * Constructor for client to connect to the Server on
+     * the specificed port.
+     * @hostname -- the name of the host, e.g. localhost
+     * @portNumber -- the port number the server is listening on
+     */
+    public Client(String hostName, int portNumber) {        
         try {
             socket = new Socket(hostName, portNumber);
             out =
@@ -34,6 +40,14 @@ import java.net.*;
         }             
     }
 
+    /**
+     * Sends a message to the server, waits for the response,
+     * and returns it.
+     * Note: if the server does not response, this method will
+     * blocking waiting for a response.
+     * @param userInput -- the message to be sent.
+     * @return -- the response from the server.
+     */
     public String send(String userInput) {
         String response = "";
         try {
@@ -47,10 +61,22 @@ import java.net.*;
         return response;
     }
 
+    /**
+     * Sends a message to the server and does not wait for a response.
+     * Use this is send a message to the server which does not expect a response,
+     * where the 'send' method would block waiting for the response.
+     * @param userInput -- the message to send
+     */
     public void sendNoResponse(String userInput) {
         out.println(userInput);
-
     }
+
+    /**
+     * Creates a client that connects to the specified host on the 
+     * specified port and enters a request-response loop.
+     * @param args -- <hostName> <pot>
+     * @throws IOException
+     */
      public static void main(String[] args) throws IOException {
           
          if (args.length != 2) {
@@ -68,7 +94,7 @@ import java.net.*;
                    new InputStreamReader(System.in));
         String userInput;
         while ((userInput = stdIn.readLine()) != null) {
-            // this is to account for lack of response on a PUT 
+            // this is to account for lack of response on a PUT, for testing the DavidPaulProtocol
             if (userInput.substring(0,4).equals("PUT ")) {
                 client.sendNoResponse(userInput);
             } else {

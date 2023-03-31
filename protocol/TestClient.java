@@ -1,9 +1,21 @@
 package protocol;
 
-import java.net.SocketException;
-
+/**
+ * Test suite for the Server/Client. 
+ * 
+ * Connects to the Server running on localhost on port 7.
+ * 
+ * Runs correctness tests and concurrency tests for 
+ * connections to the server and adherance to the 
+ * DavidPaulProtocol.
+ */
 public class TestClient {
 
+    /**
+     * Tests for ensuring that multiple clients can connect and
+     * that multiple clients with the same username cannot
+     * simultaneously connect.
+     */
     public static void concurrencyTests() {
         // check 10 clients can simultaneously connect
         Client[] clients = new Client[10];
@@ -29,6 +41,11 @@ public class TestClient {
         }
 
     }
+    /**
+     * A series of tests for a Server running the
+     * DavidPaulProtocol.
+     * @param args
+     */
     public static void main (String[] args) {
         // test #1 - connect
         Client c = new Client("localhost", 7);

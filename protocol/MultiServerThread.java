@@ -30,6 +30,13 @@ public class MultiServerThread extends Thread {
         this.socket = socket;
     }
 
+    /**
+     * The run method is called when Thread objects are instantiated.
+     * This is the main path of the thread, which handles communication
+     * with the connected client.
+     * When this method returns, the thread and its data structures are
+     * destroyed.
+     */
     public void run() {
         try (
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
@@ -127,7 +134,7 @@ public class MultiServerThread extends Thread {
                         }
                         if (nextChar > 128) { throw new IOException(); }
                         // uncomment to prevent /r - our protocol doesn't use them but
-                        // sometimes they get added in by Windows.] 
+                        // sometimes they get added in by Windows.
                         // if (nextChar == 13) {
                         //     nextChar = in.read();
                         //     continue;
