@@ -7,19 +7,20 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
+ * Run this class to run the Server.
+ * 
  * Accepts socket connections from clients and 
  * passes their socket to a new thread to handle
  * concurrent clients.
  * 
  * Holds a threadsafe set for storage of clientIds.
+ * Currently set up to work with DavidPaulProtocol.java
+ * as the protocol.
  * 
- * If the 
- * 
- * 
+ * The server will run until it is sent a kill signal - 
+ * e.g. Ctrl-c from the terminal.
  */
 public class MultiServer {
-
-    private static int MAX_CLIENTS = 10;
 
     // A set of client IDs each representing a connected client
     // Two clients with the same clientID cannot connect simultaneously
@@ -45,8 +46,7 @@ public class MultiServer {
         try (ServerSocket serverSocket = new ServerSocket(portNumber)) { 
             while (listening) {
                 MultiServerThread t = new MultiServerThread(serverSocket.accept());
-                // it may be possible for the socket to drop here already
-                // i'm not sure? 
+                // TODO it may be possible for the socket to drop here already, causing an exception. 
                 t.start();
             }
         } catch (IOException e) {
